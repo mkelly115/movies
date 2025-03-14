@@ -1,36 +1,40 @@
 import React from "react";
-import "../styles.css"
+import "../styles.css";
 import { useEffect, useState } from "react";
+import MovieCard from "./MovieCard";
 
-export default function MoviesGrid(){
+export default function MoviesGrid() {
+  const [movies, setMovies] = useState([]);
+  const [searchTerm, setSearchTerm] = useState("");
 
-    const [movies, setMovies] = useState([]);
+  useEffect(() => {
+    fetch("movies.json")
+      .then((response) => response.json())
+      .then((data) => setMovies(data));
+  }, []);
 
-    useEffect(() => {
+  const handleSearchChange = (e) => {
+    setSearchTerm(e.target.value)
+  };
 
-        fetch("movies.json")
-        .then(response => response.json())
-        .then(data => setMovies(data))
-        
-    }, [])
+  const filteredMovies = movies.filter(movie => 
+    movie.title.toLowerCase().includes(searchTerm.toLocaleLowerCase())
+  )
 
-    return(
-        <div className="movies-grid">
-
-           {
-            movies.map(movie => (
-                <div key={movie.id} className="movie-card">
-                    <img src={`images/${movie.image}`} alt={movie.title}/>
-                    <div className="movie-card-info">
-                        <h3 className="movie-card-title">{movie.title}</h3>
-                        <p className="movie-card-genre">{movie.genre}</p>
-                        <p className="movie-card-rating">{movie.rating}</p>
-                    </div>
-
-                </div>
-            ))
-           }
-
-        </div>
-    )
+  return (
+    <div>
+        <input 
+        className="search-input"
+        type="text"
+        placeholder="Search Movies..."
+        value={searchTerm}
+        onChange={handleSearchChange}
+        />
+      <div className="movies-grid">
+        {filteredMovies.map((movie) => (
+          <MovieCard movie={movie} key={movie.id} />
+        ))}
+      </div>
+    </div>
+  );
 }
