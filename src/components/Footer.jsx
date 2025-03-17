@@ -1,13 +1,11 @@
 import React from "react";
-import '../styles.css'
+import "../styles.css";
 
-export default function Footer(){
-    const currentYear = new Date().getFullYear();
-    return(
-        <footer className="footer">
-            <p className="footer">
-            © {currentYear} MovieDux, All rights reserved.
-            </p>
-        </footer>
-    )
+export default function Footer() {
+  const currentYear = new Date().getFullYear();
+  return (
+    <footer className="footer">
+      <p className="footer">© {currentYear} MovieDux, All rights reserved.</p>
+    </footer>
+  );
 }
